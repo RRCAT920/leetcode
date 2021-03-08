@@ -7,12 +7,9 @@ type List struct {
 	Next *List
 }
 
-func SearchList(l *List, key int) (*List, *List) {
-	var prev *List
-	for ; l != nil && l.Val != key; l = l.Next {
-		prev = l
-	}
-	return prev, l
+func SearchList(l *List, key int) (cur *List) {
+	_, cur = searchList(l, key)
+	return
 }
 
 func Insert(l *List, key int) {
@@ -21,7 +18,7 @@ func Insert(l *List, key int) {
 }
 
 func Delete(l *List, key int) {
-	prev, cur := SearchList(l, key)
+	prev, cur := searchList(l, key)
 	if cur != nil {
 		if prev != nil {
 			prev.Next = cur.Next
@@ -29,6 +26,14 @@ func Delete(l *List, key int) {
 			*l = *(cur.Next)
 		}
 	}
+}
+
+func searchList(l *List, key int) (*List, *List) {
+	var prev *List
+	for ; l != nil && l.Val != key; l = l.Next {
+		prev = l
+	}
+	return prev, l
 }
 
 func (l *List) String() string {
@@ -46,8 +51,7 @@ func init() {
 	Insert(l, 4)
 	Insert(l, 5)
 	fmt.Println(l)
-	_, cur := SearchList(l, 2)
-	fmt.Println(cur)
+	fmt.Println(SearchList(l, 2))
 	Delete(l, 4)
 	fmt.Println(l)
 }
